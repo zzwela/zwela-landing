@@ -47,7 +47,8 @@ export function Navbar() {
             <div className="container header-inner">
                 <Link href="/" className="logo-group" style={{ textDecoration: 'none' }}>
                     <img src="/logo_light.png" alt="Zamara-Zwela Logo" style={{ height: '40px' }} />
-                    <span className="app-brand-title">Everyday Wellbeing</span>
+                    <span className="app-brand-title desktop-only">Everyday Wellbeing</span>
+                    <span className="app-brand-title mobile-only">Everyday Wellbeing</span>
                 </Link>
 
                 <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>

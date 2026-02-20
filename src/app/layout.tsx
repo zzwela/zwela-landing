@@ -5,9 +5,9 @@ export const metadata: Metadata = {
   title: "Zamara-Zwela - Everyday Wellbeing",
   description: "Join the exclusive closed testing for the Zamara-Zwela mobile app. Experience the future of wellness tracking and community.",
   icons: {
-    icon: "/logo_dark.png",
-    shortcut: "/logo_dark.png",
-    apple: "/logo_dark.png",
+    icon: "/logo_light2.png",
+    shortcut: "/logo_light2.png",
+    apple: "/logo_light2.png",
   },
 };
 
