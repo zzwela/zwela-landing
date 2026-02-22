@@ -25,7 +25,7 @@ export function Footer() {
                         <div className="link-group">
                             <h4>LEGAL</h4>
                             <Link href="/privacy">Privacy Policy</Link>
-                            <Link href="/terms">Terms of Service</Link>
+                            <Link href="/tcs">Terms of Service</Link>
                             <Link href="/contact">Contact Us</Link>
                         </div>
                     </div>

@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone",
+  async redirects() {
+    return [{ source: "/terms", destination: "/tcs", permanent: true }];
+  },
 };
 
 export default nextConfig;
