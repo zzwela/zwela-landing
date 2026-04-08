@@ -9,7 +9,22 @@ const GOOGLE_GROUP_ID = process.env.GOOGLE_GROUP_ID; // e.g. 'testers@yourdomain
 
 export async function POST(req: Request) {
     try {
-        const { email } = await req.json();
+        const body = await req.json();
+        const email = typeof body.email === 'string' ? body.email.trim() : '';
+        const intent =
+            body.intent === 'beta' || body.intent === 'launch' || body.intent === 'both'
+                ? body.intent
+                : undefined;
+        const waitlist = body.waitlist === true;
+        const beta = body.beta === true;
+
+        if (intent !== undefined || waitlist || beta) {
+            console.info('[groups/add] ios signup preferences', {
+                intent: intent ?? (waitlist && beta ? 'both' : beta ? 'beta' : waitlist ? 'launch' : undefined),
+                waitlist,
+                beta,
+            });
+        }
 
         if (!email) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });

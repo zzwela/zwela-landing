@@ -19,7 +19,7 @@ export function Footer() {
                         <div className="link-group">
                             <h4>RESOURCES</h4>
                             <Link href="/#previews">Sneak Peak</Link>
-                            <Link href="/#waitlist">Join Waitlist</Link>
+                            <Link href="/iphone">iOS waitlist &amp; beta</Link>
                             <Link href="/contact">Support Center</Link>
                         </div>
                         <div className="link-group">

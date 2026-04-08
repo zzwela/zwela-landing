@@ -22,7 +22,9 @@ export function Navbar() {
                 <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
                     <Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
                     <Link href="/#features" onClick={() => setIsMenuOpen(false)}>Features</Link>
+                    <Link href="/#intro-showcase" onClick={() => setIsMenuOpen(false)}>Watch intro</Link>
                     <Link href="/#waitlist" onClick={() => setIsMenuOpen(false)}>Get App</Link>
+                    <Link href="/iphone" onClick={() => setIsMenuOpen(false)}>iPhone (soon)</Link>
                     <Link href="/#previews" onClick={() => setIsMenuOpen(false)}>Sneak Peak</Link>
                     <Link href="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
                 </div>

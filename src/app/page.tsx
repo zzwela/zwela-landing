@@ -1,39 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { GOOGLE_PLAY_STORE_URL, STORE_BADGE_GOOGLE_PLAY } from '@/lib/app-links';
 
 export default function LandingPage() {
-  const [showDeviceChoice, setShowDeviceChoice] = useState(false);
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-  const [pageUrl, setPageUrl] = useState('');
-  const router = useRouter();
-
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)');
-    const update = () => setIsMobile(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    setPageUrl(window.location.href);
-    return () => mq.removeEventListener('change', update);
-  }, []);
-
-  const showGetStarted = isMobile === true && !showDeviceChoice;
-  const showDeviceChoiceBlock = isMobile === true && showDeviceChoice;
-  const showDesktopMessage = isMobile === false || isMobile === null;
-
   return (
     <div className="landing-page">
       <Navbar />
 
       <div className="container">
-        <section className="hero" style={{ minHeight: showDeviceChoiceBlock ? 'auto' : '70vh', justifyContent: showDeviceChoiceBlock ? 'flex-start' : 'center', paddingTop: showDeviceChoiceBlock ? '2rem' : '4rem' }}>
+        <section className="hero" style={{ minHeight: '70vh', justifyContent: 'center', paddingTop: '4rem' }}>
           <div style={{ color: 'var(--primary)', fontWeight: '500', marginBottom: '1rem' }}>
-            <span className="desktop-only">ZAMARA ZWELA</span>
-            <span className="mobile-only">Everyday Wellbeing</span>
+            ZAMARA ZWELA
           </div>
           <h1>Your Journey to Holistic Wellbeing Starts Here</h1>
           <p>
@@ -41,64 +21,56 @@ export default function LandingPage() {
             Get the Zamara Zwela app and start your wellness journey.
           </p>
 
-          {showGetStarted && (
-            <div className="cta-area" id="waitlist" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-              <button
-                className="get-started-btn"
-                onClick={() => setShowDeviceChoice(true)}
+          <div className="hero-store-badges store-badge-row store-badge-row--horizontal" id="waitlist">
+            <div className="hero-store-cell">
+              <a
+                href={GOOGLE_PLAY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="store-badge-hit hero-store-hit"
+                title="Get Zamara Zwela on Google Play"
               >
-                Get started
-              </button>
+                <img src={STORE_BADGE_GOOGLE_PLAY} alt="Get it on Google Play" className="store-badge-img hero-store-img" />
+              </a>
             </div>
-          )}
-
-          {showDesktopMessage && (
-            <div className="desktop-get-started-message" id="waitlist">
-              <p className="desktop-message-text">
-                To install Zamara Zwela, open this page on your phone. We'll guide you through a quick setup — just open this link on your mobile device to get started.
-              </p>
-              <p className="desktop-message-sub">
-                You can send this link to yourself by email or messaging, or type it into your phone's browser: {pageUrl ? <strong>{pageUrl}</strong> : null}
-              </p>
+            <div className="hero-store-cell">
+              <Link href="/iphone" className="ios-soon-badge-hit" title="Join iOS">
+                <span className="ios-soon-badge-text">Join iOS</span>
+              </Link>
             </div>
-          )}
+          </div>
+        </section>
 
-          {showDeviceChoiceBlock && (
-            <div className="device-choice" style={{ marginTop: '2.5rem', width: '100%', maxWidth: '500px' }}>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>Choose your device</p>
-              <div className="store-buttons" style={{ flexDirection: 'column', gap: '1rem' }}>
-                <button
-                  onClick={() => router.push('/android-setup')}
-                  className="store-btn green"
-                  style={{ width: '100%', justifyContent: 'center' }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3,20.5V3.5C3,2.95 3.45,2.5 4,2.5L13.5,12L4,21.5C3.45,21.5 3,21.05 3,20.5M14,12.5L16.5,15L19.5,13.2C20.1,12.8 20.1,11.2 19.5,10.8L16.5,9L14,11.5L12.5,13.5M4.5,22L15.5,15.5L13,13L4.5,22Z" /></svg>
-                  <span>
-                    <span className="small">GET IT FOR</span>
-                    <span className="big">Android</span>
-                  </span>
-                </button>
-                <button
-                  onClick={() => router.push('/ios-setup')}
-                  className="store-btn green"
-                  style={{ width: '100%', justifyContent: 'center' }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" /></svg>
-                  <span>
-                    <span className="small">GET IT FOR</span>
-                    <span className="big">iOS (iPhone)</span>
-                  </span>
-                </button>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowDeviceChoice(false)}
-                style={{ marginTop: '1rem', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.95rem', textDecoration: 'underline' }}
+        <section className="intro-showcase" id="intro-showcase" aria-labelledby="intro-showcase-title">
+          <div className="intro-showcase-header">
+            <p className="intro-showcase-eyebrow">See it in motion</p>
+            <h2 id="intro-showcase-title" className="intro-showcase-title">
+              Introducing Zamara Zwela
+            </h2>
+            <p className="intro-showcase-sub">
+              Plays automatically (muted). Use the video controls if you want sound. Then scroll for screenshots, our
+              April poster, and features.
+            </p>
+          </div>
+          <div className="intro-video-shell">
+            <div className="intro-video-glow" aria-hidden />
+            <div className="intro-video-frame">
+              <video
+                className="intro-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                preload="auto"
+                aria-label="Zamara Zwela intro video (plays muted; use controls for sound)"
               >
-                Back
-              </button>
+                <source src="/zwela-intro-video.mp4" type="video/mp4" />
+                Your browser does not support embedded video.{' '}
+                <a href="/zwela-intro-video.mp4">Download the intro video</a>.
+              </video>
             </div>
-          )}
+          </div>
         </section>
 
         <section className="previews" id="previews">
@@ -113,6 +85,23 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="campaign-poster-section" id="campaign-poster" aria-labelledby="campaign-poster-heading">
+          <h2 id="campaign-poster-heading" className="campaign-poster-heading">
+            The vibe
+          </h2>
+          <p className="campaign-poster-lead">April 2026 — the energy we are bringing to everyday wellbeing.</p>
+          <figure className="campaign-poster-card">
+            <img
+              src="/zwela-intro-poster.jpg"
+              alt="Zamara Zwela — April 2026 campaign poster"
+              width={1080}
+              height={1350}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
         </section>
 
         <section className="facets" id="features">
