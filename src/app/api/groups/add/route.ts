@@ -1,5 +1,10 @@
 import { google } from 'googleapis';
 import { NextResponse } from 'next/server';
+import {
+    isLandingFirestoreConfigured,
+    saveIosLandingSignup,
+    type IosLandingIntent,
+} from '@/lib/firebase-admin';
 
 // These would be set in your .env file
 const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -30,10 +35,41 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
+        if (!waitlist && !beta) {
+            return NextResponse.json(
+                { error: 'Choose at least one: launch updates or beta invites.' },
+                { status: 400 },
+            );
+        }
+
+        const intentResolved: IosLandingIntent =
+            intent ?? (waitlist && beta ? 'both' : beta ? 'beta' : 'launch');
+
+        if (isLandingFirestoreConfigured()) {
+            try {
+                await saveIosLandingSignup({
+                    email,
+                    intent: intentResolved,
+                    waitlist,
+                    beta,
+                });
+            } catch (firestoreErr) {
+                console.error('[groups/add] Firestore write failed:', firestoreErr);
+                return NextResponse.json(
+                    { error: 'Failed to save signup. Please try again later.' },
+                    { status: 500 },
+                );
+            }
+        }
+
         if (!GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY || !GOOGLE_ADMIN_EMAIL || !GOOGLE_GROUP_ID) {
-            console.warn('Google Group configuration missing. Mocking success for demo.');
-            // For development/demo purposes
-            return NextResponse.json({ success: true, message: 'User added to group (mocked)' });
+            if (!isLandingFirestoreConfigured()) {
+                console.warn(
+                    'Google Group and Firestore both unconfigured. Mocking success for demo.',
+                );
+                return NextResponse.json({ success: true, message: 'Signup recorded (mocked)' });
+            }
+            return NextResponse.json({ success: true, message: 'Signup recorded' });
         }
 
         const auth = new google.auth.JWT({
